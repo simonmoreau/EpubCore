@@ -356,6 +356,8 @@ namespace EpubCore
 
             var htmlFiles = book.Format.Opf.Manifest.Items
                 .Where(item => ContentType.MimeTypeToContentType.ContainsKey(item.MediaType) && ContentType.MimeTypeToContentType[item.MediaType] == EpubContentType.Xhtml11)
+                .GroupBy(item => item.Id)
+                .Select(g => g.First()) // Keep the first occurrence for each Id
                 .ToDictionary(item => item.Id, item => item.Href);
 
             foreach (var item in book.Format.Opf.Spine.ItemRefs)
