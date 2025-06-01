@@ -137,6 +137,19 @@ namespace EpubCore.Tests
         }
 
         [Fact]
+        public void AddLanguageTest()
+        {
+            var writer = new EpubWriter();
+            var language = "en-US";
+
+            writer.AddLanguage(language);
+
+            var epub = WriteAndRead(writer);
+            Assert.NotEmpty(epub.Format.Opf.Metadata.Languages);
+            Assert.Contains(epub.Format.Opf.Metadata.Languages, l => l.Equals(language));
+        }
+
+        [Fact]
         public void RemoveCoverTest()
         {
             var epub1 = EpubReader.Read(Cwd.Combine(@"Samples/pg68369.epub"));
