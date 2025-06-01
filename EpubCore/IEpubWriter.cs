@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Linq;
 using EpubCore.Format;
 
@@ -36,5 +37,8 @@ namespace EpubCore
         XElement FindNavTocOl();
 
         ImageFormat GetContentTypeForImageName(string imageName);
+        void AddISBN(string isbn);
+        void AddIdentifier(string scheme, string value);
+        void SetDate(DateTime date);
     }
 }

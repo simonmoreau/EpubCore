@@ -150,6 +150,47 @@ namespace EpubCore.Tests
         }
 
         [Fact]
+        public void AddISBNTest()
+        {
+            var writer = new EpubWriter();
+            var isbn = "123456789X";
+
+            writer.AddISBN(isbn);
+
+            var epub = WriteAndRead(writer);
+            Assert.NotEmpty(epub.Format.Opf.Metadata.Identifiers);
+            Assert.Contains(epub.Format.Opf.Metadata.Identifiers, l => l.Text.Equals(isbn));
+            Assert.Contains(epub.Format.Opf.Metadata.Identifiers, l => l.Scheme.Equals("ISBN"));
+        }
+
+        [Fact]
+        public void AddIdentifierTest()
+        {
+            var writer = new EpubWriter();
+            var googleId = "123456789X";
+
+            writer.AddIdentifier("GOOGLE", googleId);
+
+            var epub = WriteAndRead(writer);
+            Assert.NotEmpty(epub.Format.Opf.Metadata.Identifiers);
+            Assert.Contains(epub.Format.Opf.Metadata.Identifiers, l => l.Text.Equals(googleId));
+            Assert.Contains(epub.Format.Opf.Metadata.Identifiers, l => l.Scheme.Equals("GOOGLE"));
+        }
+
+        [Fact]
+        public void SetDateTest()
+        {
+            var writer = new EpubWriter();
+            DateTime date = new DateTime(2023, 10, 1);
+            writer.SetDate(date);
+
+
+            var epub = WriteAndRead(writer);
+            Assert.NotEmpty(epub.Format.Opf.Metadata.Dates);
+            Assert.Contains(epub.Format.Opf.Metadata.Dates, l => l.Text.Equals("2023-10-01T00:00:00.000000+02:00"));
+        }
+
+        [Fact]
         public void RemoveCoverTest()
         {
             var epub1 = EpubReader.Read(Cwd.Combine(@"Samples/pg68369.epub"));

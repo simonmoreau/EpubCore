@@ -300,6 +300,39 @@ namespace EpubCore
             _format.Opf.Metadata.Languages.Add(language);
         }
 
+        public void AddISBN(string isbn)
+        {
+            var identifier = new OpfMetadataIdentifier
+            {
+                Scheme = "ISBN",
+                Text = isbn
+            };
+            _format.Opf.Metadata.Identifiers.Add(identifier);
+        }
+
+        public void AddIdentifier(string scheme, string value)
+        {
+            var identifier = new OpfMetadataIdentifier
+            {
+                Scheme = scheme,
+                Text = value
+            };
+            _format.Opf.Metadata.Identifiers.Add(identifier);
+        }
+
+        public void SetDate(DateTime date)
+        {
+            DateTimeOffset dateOffset = new DateTimeOffset(date);
+            string formatted = dateOffset.ToString("yyyy-MM-dd'T'HH:mm:ss.ffffffzzz");
+
+            var dateOpf = new OpfMetadataDate()
+            {
+                Text = formatted,
+                Event = "publication"
+            };
+            _format.Opf.Metadata.Dates.Add(dateOpf);
+        }
+
         public void SetVersion(EpubVersion version)
         {
             _format.Opf.EpubVersion = version;
@@ -699,5 +732,7 @@ namespace EpubCore
             var epub = EpubReader.Read(stream, false);
             return epub;
         }
+
+
     }
 }
